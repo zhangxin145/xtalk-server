@@ -1,0 +1,21 @@
+server:
+  port: 16667
+
+spring:
+  application:
+    name: xtalk-server
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://8.134.14.97/im_database?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false
+    username: root
+    password: bech2InofeNg0ri7ba
+## 文件上传服务器保存地址
+file-save-path: /tmp/
+
+
