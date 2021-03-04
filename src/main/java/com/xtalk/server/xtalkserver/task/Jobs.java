@@ -34,8 +34,11 @@ public class Jobs {
 
     public Jobs(ThreadPoolTaskScheduler threadPoolTaskScheduler) {
         this.threadPoolTaskScheduler = threadPoolTaskScheduler;
-        // init();
     }
+
+   /* public Jobs(ThreadPoolTaskScheduler threadPoolTaskScheduler) {
+        this.threadPoolTaskScheduler = threadPoolTaskScheduler;
+    }*/
 
     public void start(TaskEntity taskEntity) {
         if (jobsMap.containsKey(taskEntity.getId())) {

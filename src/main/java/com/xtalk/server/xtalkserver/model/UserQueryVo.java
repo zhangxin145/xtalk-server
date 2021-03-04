@@ -2,6 +2,7 @@ package com.xtalk.server.xtalkserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -22,6 +23,14 @@ public class UserQueryVo {
     private Long id;
 
     private String phone;
+
+    @ApiModelProperty("创建时间begin")
+    private String createTimeBegin;
+
+    @ApiModelProperty("创建时间end")
+    private String createTimeEnd;
+
+    private Long chatRoomId;
 
     private Long vip;
 

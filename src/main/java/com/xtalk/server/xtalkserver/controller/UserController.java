@@ -2,6 +2,7 @@ package com.xtalk.server.xtalkserver.controller;
 
 import com.xtalk.server.xtalkserver.entity.UsersEntity;
 import com.xtalk.server.xtalkserver.model.Response;
+import com.xtalk.server.xtalkserver.model.UserModel;
 import com.xtalk.server.xtalkserver.model.UserQueryVo;
 import com.xtalk.server.xtalkserver.service.UserService;
 import io.swagger.annotations.Api;
@@ -65,14 +66,13 @@ public class UserController {
         }
     }
 
-/*
     @ApiOperation(value = "添加前台用户", notes = "添加前台用户", produces = "application/json")
     @PostMapping(value = "/add")
-    public Response<List<UsersEntity>> updateUserVip(
-            @RequestBody UsersEntity usersEntity
+    public Response<UsersEntity> add(
+            @RequestBody UserModel userModel
     ) {
         try {
-            return Response.ok(userService.add(usersEntity));
+            return Response.ok(userService.add(userModel));
         } catch (Exception e) {
             return Response.exception(e);
         }
@@ -80,13 +80,13 @@ public class UserController {
 
     @ApiOperation(value = "编辑前台用户", notes = "编辑前台用户", produces = "application/json")
     @PostMapping(value = "/update")
-    public Response<List<UsersEntity>> updateUserVip(
-            @RequestBody UsersEntity usersEntity
+    public Response<UsersEntity> update(
+            @RequestBody UserModel userModel
     ) {
         try {
-            return Response.ok(userService.update(usersEntity));
+            return Response.ok(userService.update(userModel));
         } catch (Exception e) {
             return Response.exception(e);
         }
-    }*/
+    }
 }

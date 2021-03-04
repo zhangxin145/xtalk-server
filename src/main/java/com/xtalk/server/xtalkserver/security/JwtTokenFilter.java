@@ -1,7 +1,9 @@
 package com.xtalk.server.xtalkserver.security;
 
+import com.xtalk.server.xtalkserver.repository.AdminUserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,45 +26,64 @@ import java.util.List;
 @Component
 public class JwtTokenFilter extends BasicAuthenticationFilter {
 
-	public JwtTokenFilter(AuthenticationManager authenticationManager) {
-		super(authenticationManager);
-	}
+    @Autowired
+    AdminUserRepository adminUserRepository;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
-		String header = req.getHeader(SecurityConst.header);
-		if (header == null || !header.startsWith(SecurityConst.prefix)) {
-			System.out.println("======");
-			chain.doFilter(req, res);
-			return;
-		}
-		UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		chain.doFilter(req, res);
-	}
+    public JwtTokenFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
+    }
 
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-		String token = request.getHeader(SecurityConst.header);
-		if (token != null) {
-			Claims claims = Jwts.parser().setSigningKey(SecurityConst.secret)
-					.parseClaimsJws(token.replace(SecurityConst.prefix, "")).getBody();
 
-			String user = claims.getSubject();
-			List<String> roles = (List<String>) claims.get("roles");
-			ArrayList<GrantedAuthority> list = new ArrayList<>();
-			if (roles != null) {
-				for (String a : roles) {
-					GrantedAuthority g = new SimpleGrantedAuthority(a);
-					list.add(g);
-				}
-			}
-			if (user != null) {
-				return new UsernamePasswordAuthenticationToken(user, null, list);
-			}
-			return null;
-		}
-		return null;
-	}
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        String header = req.getHeader(SecurityConst.header);
+        if (header == null || !header.startsWith(SecurityConst.prefix)) {
+            System.out.println("======");
+            chain.doFilter(req, res);
+            return;
+        }
+
+
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+/*
+        Long currentUser = SecurityUtil.getCurrentUser();
+        System.out.println(currentUser+"========>");
+        AdminEntity adminEntity = adminUserRepository.findById(currentUser).orElseGet(() -> {
+            throw new RuntimeException("token err");
+        });
+        if (adminEntity.getDeleted() == 1) {
+            throw new RuntimeException("用户不存在");
+        }
+        if (adminEntity.getStatus() == 1) {
+            throw new RuntimeException("该用户已被禁用，请联系管理员");
+        }*/
+        chain.doFilter(req, res);
+    }
+
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+        String token = request.getHeader(SecurityConst.header);
+        if (token != null) {
+            Claims claims = Jwts.parser().setSigningKey(SecurityConst.secret)
+                    .parseClaimsJws(token.replace(SecurityConst.prefix, "")).getBody();
+
+            String user = claims.getSubject();
+            List<String> roles = (List<String>) claims.get("roles");
+            ArrayList<GrantedAuthority> list = new ArrayList<>();
+            if (roles != null) {
+                for (String a : roles) {
+                    GrantedAuthority g = new SimpleGrantedAuthority(a);
+                    list.add(g);
+                }
+            }
+            if (user != null) {
+                return new UsernamePasswordAuthenticationToken(user, null, list);
+            }
+            return null;
+        }
+        return null;
+    }
 
 }

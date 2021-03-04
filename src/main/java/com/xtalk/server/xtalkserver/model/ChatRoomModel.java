@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * @author xin.z
  * @date 2021/1/31 1:44 下午
@@ -19,6 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChatRoomModel extends ChatroomsEntity {
+
+    private Long owner;
+
+    private List<Long> managers;
 
     private String createName;
 

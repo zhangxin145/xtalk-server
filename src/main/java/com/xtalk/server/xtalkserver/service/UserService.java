@@ -1,6 +1,7 @@
 package com.xtalk.server.xtalkserver.service;
 
 import com.xtalk.server.xtalkserver.entity.UsersEntity;
+import com.xtalk.server.xtalkserver.model.UserModel;
 import com.xtalk.server.xtalkserver.model.UserQueryVo;
 import org.springframework.data.domain.Page;
 
@@ -18,7 +19,7 @@ public interface UserService {
 
     Optional<List<UsersEntity>> lock(List<Long> ids, Integer lockStatus);
 
-    UsersEntity add(UsersEntity usersEntity);
+    UsersEntity add(UserModel userModel);
 
-    UsersEntity update(UsersEntity usersEntity);
+    UsersEntity update(UserModel userModel);
 }

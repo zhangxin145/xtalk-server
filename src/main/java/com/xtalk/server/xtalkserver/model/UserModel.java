@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 /**
  * @author xin.z
  * @date 2021/2/27 8:43 下午
@@ -19,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RobotVo {
+public class UserModel {
 
     private Long id;
 
@@ -27,13 +25,10 @@ public class RobotVo {
 
     private String account;
 
+    //private String password;
+
     private String portraitUri;
 
-    // 0 -> 管理员  1->普通用户
-    private Integer role;
 
-    private Integer type;
-
-    private List<Long> taskIds;
 
 }

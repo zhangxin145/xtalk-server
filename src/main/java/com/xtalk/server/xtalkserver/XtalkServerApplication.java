@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {
         "com.xtalk.server.xtalkserver.repository",
 })
+
 public class XtalkServerApplication {
 
     public static void main(String[] args) {

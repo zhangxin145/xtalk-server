@@ -17,7 +17,7 @@ public interface ChatRoomMemberRepository
 
     Optional<List<ChatroomMembersEntity>> findByChatroomIdAndMemberIdInAndIsDeletedAndChatroomRole(Long chatRoomId, List<Long> userIds, int i, long l);
 
-    Optional<List<ChatroomMembersEntity>> findByMemberIdAndChatroomRoleAndIsDeleted(Long ownerId, int i, int i1);
+    Optional<List<ChatroomMembersEntity>> findByMemberIdAndChatroomRoleAndIsDeleted(Long ownerId, Long i, int i1);
 
     Optional<List<ChatroomMembersEntity>> findByChatroomIdInAndIsDeletedAndChatroomRole(List<Long> chatRoomIds, int i, Long i1);
 

@@ -265,15 +265,20 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             membersEntity.setChatroomId(chatRoomId);
             membersEntity.setMemberId(u);
             // todo 机器人任务
+            membersEntity.setDisplayName("");
+            membersEntity.setTimestamp(System.currentTimeMillis());
             membersEntity.setMemberId(u);
             membersEntity.setChatroomRole(1L);
             membersEntity.setIsDeleted(0);
+            membersEntity.setIsMute(0L);
             membersEntity.setCreatedAt(new Date());
             membersEntity.setUpdatedAt(new Date());
             return membersEntity;
         }).collect(Collectors.toList());
 
-        chatRoomMemberRepository.saveAll(membersEntities);
+        membersEntities.stream().forEach(a->{
+            chatRoomMemberRepository.save(a);
+        });
         return update;
     }
 
@@ -311,7 +316,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         query.where(chatroomsEntity.defendStatus.eq(1L));
         Long ownerId = queryVo.getOwnerId();
         if (ownerId != null && ownerId > 0) {
-            Optional<List<ChatroomMembersEntity>> chatroomMembersEntities = chatRoomMemberRepository.findByMemberIdAndChatroomRoleAndIsDeleted(ownerId, 0, 0);
+            Optional<List<ChatroomMembersEntity>> chatroomMembersEntities = chatRoomMemberRepository.findByMemberIdAndChatroomRoleAndIsDeleted(ownerId, 0L, 0);
             chatroomMembersEntities.ifPresent(a -> {
                 List<Long> roomsId = a.stream().map(ChatroomMembersEntity::getChatroomId).distinct().collect(Collectors.toList());
                 if (roomsId.size() > 0) {
@@ -366,7 +371,17 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             }
             Long roomId = model.getId();
             Long memberId = roomOwnerMaps.get(roomId);
+            model.setOwner(memberId);
             String ownerName = ownerMaps.get(memberId);
+            Optional<List<ChatroomMembersEntity>> managers = chatRoomMemberRepository.findByChatroomIdInAndIsDeletedAndChatroomRole(chatRoomIds, 0, 2L);
+            if (managers.isPresent()) {
+                List<ChatroomMembersEntity> memberList = managers.get();
+                if (memberList.size() > 0) {
+                    model.setManagers(memberList.stream().map(ChatroomMembersEntity::getMemberId).collect(Collectors.toList()));
+                }
+            }
+
+
             if (StringUtils.isNotBlank(ownerName)) {
                 model.setOwnerName(ownerName);
             }

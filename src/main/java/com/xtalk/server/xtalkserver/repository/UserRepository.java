@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface UserRepository
         extends BaseRepository<UsersEntity, Long> {
     Optional<List<UsersEntity>> findByVipIdIn(List<Long> vipIds);
+
+    Optional<UsersEntity> findFirstByAccount(String account);
 }

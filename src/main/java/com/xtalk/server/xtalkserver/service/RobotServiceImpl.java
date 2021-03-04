@@ -72,14 +72,12 @@ public class RobotServiceImpl implements RobotService {
         usersEntity.setFlag(0L);
         Integer random = (int) (Math.random() * 900000) + 100000;
         String account = random.toString();
-        usersEntity.setAccount(account);
+        usersEntity.setAccount("r" + account);
         int salt = (int) (Math.random() * 9000) + 1000;
         String hashStr = MD5Utils.hash(account, salt);
-        usersEntity.setPasswordSalt(hashStr);
-        usersEntity.setPasswordHash(salt + "");
+        usersEntity.setPasswordSalt(salt + "");
+        usersEntity.setPasswordHash(hashStr);
         // 默认值
-        usersEntity.setPasswordSalt("");
-        usersEntity.setPasswordHash("");
         usersEntity.setRongCloudToken("");
         usersEntity.setGender("");
         usersEntity.setStAccount("");
@@ -89,8 +87,8 @@ public class RobotServiceImpl implements RobotService {
         usersEntity.setFriVerify(1L);
         usersEntity.setGroupVerify(1L);
         usersEntity.setPokeStatus(1L);
-        usersEntity.setGroupCount(1L);
-        usersEntity.setTimestamp(1L);
+        usersEntity.setGroupCount(0L);
+        usersEntity.setTimestamp(0L);
         usersEntity.setUpdatedAt(new Date());
         usersEntity.setCreatedAt(new Date());
         UsersEntity result = userRepository.save(usersEntity);
@@ -111,6 +109,7 @@ public class RobotServiceImpl implements RobotService {
 
 
     private void checkParam(RobotVo robotVo) {
+
         String nickname = robotVo.getNickname();
         Assert.isTrue(StringUtils.isNotBlank(nickname), "昵称不能为空");
         String url = robotVo.getPortraitUri();
